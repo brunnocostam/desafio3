@@ -48,13 +48,15 @@ app.put("/repositories/:id", (request, response) => {
 app.delete("/repositories/:id", (request, response) => {
   const { id } = request.params;
 
- const repository = repositories.find((repository) => repository.id === id);
+  const repository = repositories.find((repository) => repository.id === id);
+
+  const index = repositories.indexOf(repository);
 
   if (!repository) {
     return response.status(404).json({ error: "Repository not found" });
   }
 
-  repositories.splice(repository, 1);
+  repositories.splice(index, 1);
 
   return response.sendStatus(204);
 });
@@ -67,10 +69,10 @@ app.post("/repositories/:id/like", (request, response) => {
   if (repositoryIndex < 0) {
     return response.status(404).json({ error: "Repository not found" });
   }
-
+  
   const likes = ++repositories[repositoryIndex].likes;
 
-  return response.json(repositories[repositoryIndex].likes);
+  return response.json(repositories[repositoryIndex]);
 });
 
 module.exports = app;
